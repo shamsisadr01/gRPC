@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+option csharp_namespace="gRPC_client.protos";
+
+message CreateProductService{
+	string title=1;
+	string des=2;
+}
+
+message ProductResponeDto
+{
+	string name =1;
+}
+
+message GetProductBYTagRequset{
+	string tag=1;
+}
+
+message GetProductBYResponse{
+	string title=1;
+	int32 id=2;
+}
+
+message UpdateProductRequsetDto{
+	string title=1;
+	string des = 2;
+}
+
+message UpdateProductResponsDto{
+	string message = 1;
+	int32 status=2;
+}
+
+service ProductGRPService
+{
+	rpc CreateProduct(CreateProductService) returns (ProductResponeDto);
+
+	rpc GetProductBYTag(GetProductBYTagRequset) returns (stream GetProductBYResponse);
+
+	rpc UpdateProduct(stream UpdateProductRequsetDto) returns (UpdateProductResponsDto);
+}
+
+ 
