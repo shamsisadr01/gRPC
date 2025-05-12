@@ -20,6 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Protobuf Include="..\math_service.proto" GrpcServices="Both">
+      <Link>Protos\math_service.proto</Link>
+    </Protobuf>
     <Protobuf Include="..\product_service.proto" GrpcServices="Both">
       <Link>Protos\product_service.proto</Link>
     </Protobuf>

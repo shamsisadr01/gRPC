@@ -46,5 +46,20 @@ namespace Servver.Services
                 Status = 200
             };
         }
+
+        public override async Task GetProductByID(IAsyncStreamReader<GetProductByIDRequsetDto> requestStream, IServerStreamWriter<GetProductByIDResponeDto> responseStream, ServerCallContext context)
+        {
+            while (await requestStream.MoveNext())
+            {
+                string result = requestStream.Current.ProductID + "===>" + " ";
+                Console.WriteLine("Product ID ---> "+result);
+
+                await responseStream.WriteAsync(new GetProductByIDResponeDto()
+                {
+                  Result = result
+                });
+            }
+          
+        }
     }
 }

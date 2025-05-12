@@ -1,0 +1,16 @@
+syntax  = "proto3";
+
+option csharp_namespace="gRPC_client.protos";
+
+
+message DivisionRequseyDto{
+	int32 number=1;
+}
+
+message DivisionResponseDto{
+	int32 result=1;
+}
+
+service MathService{
+	rpc CalculateDivision(DivisionRequseyDto) returns (DivisionResponseDto);
+}

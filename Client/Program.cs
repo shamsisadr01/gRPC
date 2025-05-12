@@ -1,4 +1,5 @@
 ﻿
+using Client;
 using Grpc.Core;
 using gRPC_client.protos;
 
@@ -12,40 +13,44 @@ try
 
     var clientproductService = new ProductGRPService.ProductGRPServiceClient(channel);
 
-  /*  var result = clientproductService.CreateProduct(new CreateProductService()
+    Product product = new Product(clientproductService);
+
+    var mathserviceClient = new MathService.MathServiceClient(channel);
+    Client.Math math = new Client.Math(mathserviceClient);
+    math.Division();
+
+    /* var client = clientproductService.UpdateProduct();
+
+     foreach (var item in Enumerable.Range(1,10))
+     {
+          await  client.RequestStream.WriteAsync(new UpdateProductRequsetDto()
+         {
+             Title = "product Update" + item,
+             Des = ",xh djhf"
+         });
+     }
+
+     await client.RequestStream.CompleteAsync();
+
+     var r = await client.ResponseAsync;
+     Console.WriteLine(r.Status + "--->" + r.Message);*/
+
+   /* var client = clientproductService.GetProductByID();
+    foreach (var item in Enumerable.Range(1, 10))
     {
-        Des = "dfdf",
-        Title ="dfdf"
-    });
-
-    Console.WriteLine(result);
-
-     var respone = clientproductService.GetProductBYTag(new GetProductBYTagRequset()
-    {
-        Tag = "fg"
-    });
-
-    while (await respone.ResponseStream.MoveNext())
-    {
-        Console.WriteLine(respone.ResponseStream.Current.Title);
-    }*/
-
-    var client = clientproductService.UpdateProduct();
-
-    foreach (var item in Enumerable.Range(1,10))
-    {
-         await  client.RequestStream.WriteAsync(new UpdateProductRequsetDto()
+        await client.RequestStream.WriteAsync(new GetProductByIDRequsetDto()
         {
-            Title = "product Update" + item,
-            Des = ",xh djhf"
+            ProductID = item
         });
+
     }
 
     await client.RequestStream.CompleteAsync();
 
-    var r = await client.ResponseAsync;
-    Console.WriteLine(r.Status + "--->" + r.Message);
-
+    while(await client.ResponseStream.MoveNext())
+    {
+        Console.WriteLine("Get Data ---> " + client.ResponseStream.Current.Result + "---->");
+    }*/
     Console.ReadKey();
 
 }

@@ -12,7 +12,10 @@ try
 {
     _server = new Server()
     {
-        Services = { ProductGRPService.BindService(new productServiceIm()) },
+        Services = { 
+            ProductGRPService.BindService(new productServiceIm()) ,
+            MathService.BindService(new MathServiceIm())
+        },
         Ports = { new ServerPort("localhost", Port, ServerCredentials.Insecure) }
     };
     _server.Start();
