@@ -1,6 +1,8 @@
 ﻿
 using Client;
+using Client.Interceptors;
 using Grpc.Core;
+using Grpc.Core.Interceptors;
 using gRPC_client.protos;
 
 string target = "localhost:50051";
@@ -12,17 +14,18 @@ var clientKey = File.ReadAllText("ssl/client.key");
 var channelCredential = new SslCredentials(caCrt, new KeyCertificatePair(clientCrt, clientKey));
 
 
-var channel = new Channel(target, channelCredential);
+var channel = new Channel(target, ChannelCredentials.Insecure);
+var callInvoker = channel.Intercept(new LogInterceptor());
 
 try
 {
     await channel.ConnectAsync();
 
-    var clientproductService = new ProductGRPService.ProductGRPServiceClient(channel);
+    var clientproductService = new ProductGRPService.ProductGRPServiceClient(callInvoker);
 
     Product product = new Product(clientproductService);
 
-    var mathserviceClient = new MathService.MathServiceClient(channel);
+    var mathserviceClient = new MathService.MathServiceClient(callInvoker);
     Client.Math math = new Client.Math(mathserviceClient);
     math.Division();
 

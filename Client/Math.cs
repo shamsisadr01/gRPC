@@ -20,7 +20,7 @@ namespace Client
             {
                 var response = clinet.CalculateDivision(new DivisionRequseyDto()
                 {
-                    Number = 0
+                    Number = 5
                 },deadline:DateTime.UtcNow.AddSeconds(5));
                 Console.WriteLine($"Division Result {response.Result}");
             }

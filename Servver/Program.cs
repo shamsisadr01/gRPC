@@ -1,7 +1,11 @@
 ﻿
 
 using Grpc.Core;
+using Grpc.Core.Interceptors;
+using Grpc.Reflection;
+using Grpc.Reflection.V1Alpha;
 using gRPC_client.protos;
+using Servver.Interceptors;
 using Servver.Services;
 
 const int Port = 50051;
@@ -21,13 +25,15 @@ var credentials = new SslServerCredentials(new List<KeyCertificatePair>()
 
 try
 {
+    var reflections = new ReflectionServiceImpl(ProductGRPService.Descriptor,MathService.Descriptor);
     _server = new Server()
     {
-        Services = { 
+        Services = {
             ProductGRPService.BindService(new productServiceIm()) ,
-            MathService.BindService(new MathServiceIm())
+            MathService.BindService(new MathServiceIm()).Intercept(new LogInterceptor()),
+            ServerReflection.BindService(reflections)
         },
-        Ports = { new ServerPort("localhost", Port, credentials) }
+        Ports = { new ServerPort("localhost", Port, ServerCredentials.Insecure) }
     };
     _server.Start();
 
