@@ -5,7 +5,14 @@ using gRPC_client.protos;
 
 string target = "localhost:50051";
 
-var channel = new Channel(target, ChannelCredentials.Insecure);
+var caCrt = File.ReadAllText("ssl/ca.crt");
+var clientCrt = File.ReadAllText("ssl/client.crt");
+var clientKey = File.ReadAllText("ssl/client.key");
+
+var channelCredential = new SslCredentials(caCrt, new KeyCertificatePair(clientCrt, clientKey));
+
+
+var channel = new Channel(target, channelCredential);
 
 try
 {

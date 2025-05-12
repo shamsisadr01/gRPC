@@ -8,6 +8,17 @@ const int Port = 50051;
 
 Server? _server = null;
 
+var caCrt = File.ReadAllText("ssl/ca.crt");
+var serverCrt = File.ReadAllText("ssl/server.crt");
+var serverKey = File.ReadAllText("ssl/server.key");
+
+var keyPair = new KeyCertificatePair(serverCrt, serverKey);
+
+var credentials = new SslServerCredentials(new List<KeyCertificatePair>()
+{
+    keyPair
+},caCrt,true);
+
 try
 {
     _server = new Server()
@@ -16,7 +27,7 @@ try
             ProductGRPService.BindService(new productServiceIm()) ,
             MathService.BindService(new MathServiceIm())
         },
-        Ports = { new ServerPort("localhost", Port, ServerCredentials.Insecure) }
+        Ports = { new ServerPort("localhost", Port, credentials) }
     };
     _server.Start();
 

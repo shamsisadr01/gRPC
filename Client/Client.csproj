@@ -8,6 +8,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ssl\ca.crt" />
+    <None Remove="ssl\client.crt" />
+    <None Remove="ssl\client.key" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="ssl\ca.crt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ssl\client.crt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ssl\client.key">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.30.2" />
     <PackageReference Include="Grpc" Version="2.46.6" />
     <PackageReference Include="Grpc.AspNetCore.Server" Version="2.49.0" />
